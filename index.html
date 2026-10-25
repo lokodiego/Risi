@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risi - Humor y Motivación</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body {
+font-family: 'Outfit', sans-serif;
+background-color: #f1f5f9;
+color: #1e293b;
+}
+.glass-btn {
+background: rgba(255, 255, 255, 0.85);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.6);
+}
+@keyframes float-heart {
+0% { transform: translateY(0) scale(0.6); opacity: 1; }
+100% { transform: translateY(-110px) scale(1.4); opacity: 0; }
+}
+.animate-float-heart {
+animation: float-heart 0.9s ease-out forwards;
+}
+</style>
+</head>
+<body class="min-h-screen flex flex-col pb-24">
+
+<!-- Header / Barra Superior -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 px-4 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-2">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md shadow-orange-500/20 text-white font-bold text-xl relative overflow-hidden">
+<span class="relative z-10">R</span>
+<div class="absolute inset-0 bg-white/10"></div>
+</div>
+<div class="flex items-center">
+<span class="text-2xl font-bold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">Risi</span>
+<span class="ml-1 text-amber-500 text-lg">✨</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="glass-btn px-3 py-1.5 rounded-full flex items-center space-x-1.5 shadow-sm text-sm font-semibold text-amber-600">
+<span>🪙</span>
+<span id="user-coins">1,250</span>
+</div>
+<div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 overflow-hidden border-2 border-white shadow-sm flex items-center justify-center text-white font-bold text-sm">
+U
+</div>
+</div>
+</header>
+
+<!-- Contenido Principal Dinámico -->
+<main id="main-content" class="flex-1 max-w-md w-full mx-auto px-4 py-4 space-y-4">
+<!-- El feed se inyecta por JavaScript -->
+</main>
+
+<!-- Modal de Regalos -->
+<div id="gift-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-end justify-center sm:items-center p-0 sm:p-4">
+<div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold text-slate-800">Enviar Regalo Risi 🎁</h3>
+<button onclick="closeGiftModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold">✕</button>
+</div>
+<p class="text-xs text-slate-500 mb-4">Apoya a los creadores de humor enviando destellos y premios especiales.</p>
+<div class="grid grid-cols-3 gap-3 mb-6">
+<button onclick="sendSpecificGift(50, '☕ Café Energético')" class="p-3 rounded-2xl bg-amber-50 border border-amber-200 hover:bg-amber-100 flex flex-col items-center transition-transform active:scale-95">
+<span class="text-2xl mb-1">☕</span>
+<span class="text-xs font-bold text-slate-700">Café</span>
+<span class="text-[10px] text-amber-600 font-semibold">50 🪙</span>
+</button>
+<button onclick="sendSpecificGift(150, '😂 Risas & Carcajadas')" class="p-3 rounded-2xl bg-amber-50 border border-amber-200 hover:bg-amber-100 flex flex-col items-center transition-transform active:scale-95">
+<span class="text-2xl mb-1">😂</span>
+<span class="text-xs font-bold text-slate-700">Carcajada</span>
+<span class="text-[10px] text-amber-600 font-semibold">150 🪙</span>
+</button>
+<button onclick="sendSpecificGift(500, '🌟 Estrella de Oro')" class="p-3 rounded-2xl bg-amber-50 border border-amber-200 hover:bg-amber-100 flex flex-col items-center transition-transform active:scale-95">
+<span class="text-2xl mb-1">🌟</span>
+<span class="text-xs font-bold text-slate-700">Estrella</span>
+<span class="text-[10px] text-amber-600 font-semibold">500 🪙</span>
+</button>
+</div>
+</div>
+</div>
+
+<!-- Modal para Subir Video -->
+<div id="upload-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+<div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold text-slate-800">Crear Nuevo Post ✨</h3>
+<button onclick="closeUploadModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold">✕</button>
+</div>
+<div class="space-y-3">
+<div>
+<label class="text-xs font-semibold text-slate-600">Descripción / Chiste / Motivación</label>
+<textarea id="upload-desc" rows="3" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-amber-500" placeholder="¿Qué quieres compartir hoy con la comunidad?"></textarea>
+</div>
+<div>
+<label class="text-xs font-semibold text-slate-600">Categoría</label>
+<select id="upload-cat" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-amber-500">
+<option>😊 Pura Risa</option>
+<option>🚀 Motivación Diaria</option>
+<option>💡 Reflexiones</option>
+</select>
+</div>
+<button onclick="submitPost()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold shadow-lg shadow-orange-500/30 active:scale-98 transition-transform mt-2">Publicar en Risi</button>
+</div>
+</div>
+</div>
+
+<!-- Barra de Navegación Inferior -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 py-2.5 px-6 flex justify-around items-center z-40 shadow-lg">
+<button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center text-amber-500 font-medium text-xs transition-colors">
+<span class="text-xl">🏠</span>
+<span class="mt-0.5">Inicio</span>
+</button>
+<button onclick="switchTab('explore')" id="tab-explore" class="flex flex-col items-center text-slate-400 font-medium text-xs hover:text-amber-500 transition-colors">
+<span class="text-xl">🔍</span>
+<span class="mt-0.5">Explorar</span>
+</button>
+<button onclick="openUploadModal()" class="w-12 h-12 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/30 active:scale-95 transition-transform">
+<span class="text-2xl font-light">+</span>
+</button>
+<button onclick="switchTab('wallet')" id="tab-wallet" class="flex flex-col items-center text-slate-400 font-medium text-xs hover:text-amber-500 transition-colors">
+<span class="text-xl">🎁</span>
+<span class="mt-0.5">Billetera</span>
+</button>
+<button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center text-slate-400 font-medium text-xs hover:text-amber-500 transition-colors">
+<span class="text-xl">👤</span>
+<span class="mt-0.5">Perfil</span>
+</button>
+</nav>
+
+<!-- Scripts -->
+<script>
+let currentCoins = 1250;
+let currentTab = 'home';
+
+let posts = [
+{
+id: 1,
+user: '@UsuarioRisi',
+category: '😊 Pura Risa',
+time: 'Hace 15 min',
+desc: 'Cuando intentas empezar la semana con toda la actitud positiva posible... 😅✨',
+likes: 12400,
+liked: false,
+comments: 1800,
+videoBg: 'from-amber-500/20 to-orange-500/20',
+emoji: '🎬'
+},
+{
+id: 2,
+user: '@MotivaCoach',
+category: '🚀 Motivación Diaria',
+time: 'Hace 1 hora',
+desc: 'No cuentes los días, haz que los días cuenten. ¡Tú puedes con todo lo que te propongas hoy! 💪🔥',
+likes: 8900,
+liked: false,
+comments: 640,
+videoBg: 'from-blue-500/20 to-indigo-500/20',
+emoji: '🎯'
+},
+{
+id: 3,
+user: '@HumorSano',
+category: '😊 Pura Risa',
+time: 'Hace 3 horas',
+desc: 'Yo explicando por qué necesito vacaciones de las vacaciones que acabo de tomar 🏖️😂',
+likes: 24500,
+liked: true,
+comments: 3100,
+videoBg: 'from-emerald-500/20 to-teal-500/20',
+emoji: '🌴'
+}
+];
+
+function renderApp() {
+const main = document.getElementById('main-content');
+if (!main) return;
+
+if (currentTab === 'home' || currentTab === 'explore') {
+main.innerHTML = posts.map(p => &lt;div class="bg-white rounded-3xl p-4 shadow-xl shadow-slate-200/60 border border-slate-100 relative overflow-hidden"&gt; &lt;div class="flex items-center justify-between mb-3"&gt; &lt;span class="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full border border-amber-100"&gt; ${p.category}
+</span>
+<span class="text-xs text-slate-400 font-medium">`${p.time}</span>
+</div>
+
+<div class="relative w-full h-96 bg-slate-900 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center group cursor-pointer" onclick="togglePlayState(this)">
+<div class="absolute inset-0 bg-gradient-to-tr {p.emoji}</div>
+<p class="font-medium text-lg">Video Interactivo Risi</p>
+<p class="text-xs text-slate-300 mt-1 status-text">Toca para reproducir</p>
+</div>
+
+<div class="absolute right-3 bottom-16 flex flex-col items-center space-y-4 z-20" onclick="event.stopPropagation()">
+<button onclick="triggerLike({p.liked ? '💖' : '❤️'}</span>
+<span class="text-[10px] font-bold text-slate-600">{p.user}')" class="glass-btn w-12 h-12 rounded-full flex flex-col items-center justify-center text-slate-700 shadow-lg active:scale-90 transition-transform">
+<span class="text-xl">💬</span>
+<span class="text-[10px] font-bold text-slate-600">$`{formatNumber(p.comments)}</span>
+</button>
+<button onclick="openGiftModal()" class="glass-btn w-12 h-12 rounded-full flex flex-col items-center justify-center text-slate-700 shadow-lg active:scale-90 transition-transform">
+<span class="text-xl">🎁</span>
+<span class="text-[10px] font-bold text-slate-600">Regalo</span>
+</button>
+<button onclick="navigator.clipboard?.writeText(window.location.href); alert('¡Enlace copiado! ↗️');" class="glass-btn w-12 h-12 rounded-full flex flex-col items-center justify-center text-slate-700 shadow-lg active:scale-90 transition-transform">
+<span class="text-xl">↗️</span>
+<span class="text-[10px] font-bold text-slate-600">Share</span>
+</button>
+</div>
+
+<div class="absolute bottom-3 left-3 right-16 z-20 text-white">
+<div class="font-bold text-sm flex items-center space-x-1">
+<span>${p.user}&lt;/span&gt; &lt;/div&gt; &lt;p class="text-xs text-slate-200 mt-0.5 line-clamp-2"&gt;${p.desc}</p>
+</div>
+</div>
+</div>
+).join(''); } else if (currentTab === 'wallet') { main.innerHTML =
+<div class="bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl p-6 text-white shadow-xl shadow-orange-500/20 mb-4">
+<p class="text-xs font-medium uppercase tracking-wider opacity-90">Monedas Disponibles</p>
+<h2 class="text-4xl font-extrabold mt-1">🪙 ${formatNumber(currentCoins)}&lt;/h2&gt; &lt;p class="text-xs mt-3 opacity-90"&gt;Usa tus monedas para enviar regalos a tus creadores favoritos en Risi.&lt;/p&gt; &lt;/div&gt; &lt;div class="bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/60 border border-slate-100"&gt; &lt;h3 class="font-bold text-slate-800 mb-3"&gt;Obtener más monedas ✨&lt;/h3&gt; &lt;div class="space-y-3"&gt; &lt;button onclick="addCoins(500)" class="w-full p-4 rounded-2xl bg-amber-50 border border-amber-200 flex justify-between items-center hover:bg-amber-100 transition-colors"&gt; &lt;div class="text-left"&gt; &lt;p class="font-bold text-slate-800 text-sm"&gt;Paquete Inicial Risi&lt;/p&gt; &lt;p class="text-xs text-amber-600"&gt;+500 Monedas 🪙&lt;/p&gt; &lt;/div&gt; &lt;span class="bg-amber-500 text-white font-bold text-xs px-3 py-1.5 rounded-full"&gt;Gratis&lt;/span&gt; &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;;
+} else if (currentTab === 'profile') {
+main.innerHTML = &lt;div class="bg-white rounded-3xl p-6 shadow-xl shadow-slate-200/60 border border-slate-100 text-center"&gt; &lt;div class="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 mx-auto flex items-center justify-center text-white text-3xl font-bold shadow-lg mb-3"&gt; U &lt;/div&gt; &lt;h2 class="text-xl font-bold text-slate-800"&gt;Tu Perfil Risi&lt;/h2&gt; &lt;p class="text-xs text-slate-500 mt-0.5"&gt;@UsuarioRisi • Amante del humor&lt;/p&gt; &lt;button onclick="switchTab('home')" class="w-full mt-6 py-3 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm"&gt;Ver publicaciones&lt;/button&gt; &lt;/div&gt;;
+}
+
+['home', 'explore', 'wallet', 'profile'].forEach(tab => {
+const btn = document.getElementById(tab-${tab}`);
+if (btn) {
+if (tab === currentTab) {
+btn.className = 'flex flex-col items-center text-amber-500 font-medium text-xs transition-colors';
+} else {
+btn.className = 'flex flex-col items-center text-slate-400 font-medium text-xs hover:text-amber-500 transition-colors';
+}
+}
+});
+}
+
+function switchTab(tab) {
+currentTab = tab;
+renderApp();
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatNumber(num) {
+if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+return num;
+}
+
+function triggerLike(id, btn) {
+const post = posts.find(p => p.id === id);
+if (post) {
+post.liked = !post.liked;
+post.likes += post.liked ? 1 : -1;
+renderApp();
+}
+}
+
+function togglePlayState(container) {
+const status = container.querySelector('.status-text');
+if (status.innerText.includes('reproducir')) {
+status.innerText = '▶️ Reproduciendo...';
+} else {
+status.innerText = 'Toca para reproducir';
+}
+}
+
+function openGiftModal() { document.getElementById('gift-modal').classList.remove('hidden'); }
+function closeGiftModal() { document.getElementById('gift-modal').classList.add('hidden'); }
+
+function sendSpecificGift(cost, name) {
+if (currentCoins >= cost) {
+currentCoins -= cost;
+document.getElementById('user-coins').innerText = currentCoins.toLocaleString();
+closeGiftModal();
+alert(¡Has enviado${name} con éxito! 🎉`);
+} else {
+alert('No tienes suficientes monedas.');
+}
+}
+
+function openUploadModal() { document.getElementById('upload-modal').classList.remove('hidden'); }
+function closeUploadModal() { document.getElementById('upload-modal').classList.add('hidden'); }
+
+function submitPost() {
+const desc = document.getElementById('upload-desc').value.trim();
+const cat = document.getElementById('upload-cat').value;
+if (!desc) { alert('Escribe una descripción.'); return; }
+
+posts.unshift({
+id: posts.length + 1,
+user: '@UsuarioRisi',
+category: cat,
+time: 'Justo ahora',
+desc: desc,
+likes: 1,
+liked: true,
+comments: 0,
+videoBg: 'from-amber-500/20 to-orange-500/20',
+emoji: '✨'
+});
+
+closeUploadModal();
+document.getElementById('upload-desc').value = '';
+switchTab('home');
+alert('¡Publicado con éxito! 🚀');
+}
+
+function addCoins(amount) {
+currentCoins += amount;
+document.getElementById('user-coins').innerText = currentCoins.toLocaleString();
+alert(¡+${amount} monedas añadidas! 🪙);
+}
+
+renderApp();
+</script>
+</body>
+</html>
